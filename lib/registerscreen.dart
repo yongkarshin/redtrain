@@ -216,9 +216,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
     if((_isEmailValid(email))&&
-      (_isPassword(password))&&(password.length>5)&&
+      (password.length>5)&&
       (phone.length>10)||(phone.length<11)&&
-      (_isNameValid(name))&&(name.length>3)){
+      (name.length>3)){
      
     http.post(urlRegister, body: {
       "name": name,
@@ -349,12 +349,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
     bool _isNameValid(String name){
-      return RegExp(r"^[a-zA-Z]").hasMatch(name);
-    }
-
-    bool _isPassword(String password){
-      return RegExp(r"^[a-zA-Z0-9]").hasMatch(password);
-    }
-
-  
 }
