@@ -348,5 +348,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
   }
 
-    bool _isNameValid(String name){
 }
