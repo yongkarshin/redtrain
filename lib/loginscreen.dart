@@ -113,7 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(5.0)),
                         minWidth: 100,
                         height: 50,
-                        child: Text('Login'),
+                        child: Text('Login',
+                        style: TextStyle(fontSize: 16)),
                         color: Colors.redAccent,
                         textColor: Colors.white,
                         elevation: 10,
@@ -228,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("Yes"),
+              child: new Text("Yes",style: TextStyle(fontSize: 16)),
               onPressed: () {
                 Navigator.of(context).pop();
                 print(
@@ -237,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             ),
             new FlatButton(
-              child: new Text("No"),
+              child: new Text("No",style: TextStyle(fontSize: 16)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -262,19 +263,20 @@ class _LoginScreenState extends State<LoginScreen> {
     return showDialog(
           context: context,
           builder: (context) => new AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to exit an App'),
+            title: new Text('Are you sure?',style: TextStyle(fontSize: 25)),
+            content: new Text('Do you want to exit an App',
+            style: TextStyle(fontSize: 20)),
             actions: <Widget>[
               MaterialButton(
                   onPressed: () {
                     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                   },
-                  child: Text("Exit")),
+                  child: Text("Exit",style: TextStyle(fontSize: 16))),
               MaterialButton(
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: Text("Cancel")),
+                  child: Text("Cancel",style: TextStyle(fontSize: 16))),
             ],
           ),
         ) ??

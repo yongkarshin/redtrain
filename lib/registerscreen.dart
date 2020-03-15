@@ -158,7 +158,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(5.0)),
                         minWidth: 115,
                         height: 50,
-                        child: Text('Register'),
+                        child: Text('Register', 
+                        style: TextStyle(fontSize: 16)),
                         color: Colors.redAccent,
                         textColor: Colors.white,
                         elevation: 10,
@@ -208,6 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String email = _emailEditingController.text;
     String phone = _phoneditingController.text;
     String password = _passEditingController.text;
+    String verify='0';
     if (!_isChecked) {
       Toast.show("Please Accept Term", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -223,6 +225,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       "email": email,
       "password": password,
       "phone": phone,
+      "verify": verify,
     }).then((res) {
       if (res.body == "success") {
         Navigator.pop(
@@ -245,8 +248,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _loginScreen() {
-    Navigator.pop(context,
-        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+      showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Already register?",
+          style: TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold)),
+          content: new Container(
+            height: 100,
+            child: Column(
+              children: <Widget>[
+                Text(
+                  "Are you sure wants to cancel register?",
+                  style: TextStyle(fontSize: 20.0),
+                  
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Yes", style: TextStyle(fontSize: 16.0)),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => LoginScreen()));
+              },
+            ),
+            new FlatButton(
+              child: new Text("No", style: TextStyle(fontSize: 16.0)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+    
   }
 
   void _onChange(bool value) {
@@ -263,7 +305,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("EULA"),
+          title: new Text("End-User License Agreement (EULA) of redTrain."),
           content: new Container(
             height: screenHeight / 2,
             child: Column(
@@ -281,7 +323,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontSize: 12.0,
                             ),
                             text:
-                                "This End-User License Agreement (EULA) is a legal agreement between you and redTrain This EULA agreement governs your acquisition and use of our redTrain software (Software) directly from redTrain or indirectly through a redTrain authorized reseller or distributor (a Reseller).Please read this EULA agreement carefully before completing the installation process and using the redTrain software. It provides a license to use the redTrain software and contains warranty information and liability disclaimers.If you register for a free trial of the redTrain software, this EULA agreement will also govern that trial. By clicking accept or installing and/or using the redTrain software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.If you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.This EULA agreement shall apply only to the Software supplied by redTrain herewith regardless of whether other software is referred to or described herein. The terms also apply to any redTrain updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply. This EULA was created by EULA Template for redTrain.License Grant redTrain hereby grants you a personal, non-transferable, non-exclusive licence to use the redTrain software on your devices in accordance with the terms of this EULA agreement.You are permitted to load the redTrain software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum requirements of the redTrain software.You are not permitted to:Edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things Reproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose Allow any third party to use the Software on behalf of or for the benefit of any third party Use the Software in any way which breaches any applicable local, national or international law use the Software for any purpose that redTrain considers is a breach of this EULA agreement Intellectual Property and Ownership redTrain shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of redTrain. redTrain reserves the right to grant licences to use the Software to third parties.Termination This EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to redTrain.It will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.Governing Law This EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of my."
+                                "This End-User License Agreement (EULA) is a legal agreement between you and redTrain.\n\n This EULA agreement governs your acquisition and use of our redTrain software (Software) directly from redTrain or indirectly through a redTrain authorized reseller or distributor (a Reseller).\n\nPlease read this EULA agreement carefully before completing the installation process and using the redTrain software. It provides a license to use the redTrain software and contains warranty information and liability disclaimers.\n\nIf you register for a free trial of the redTrain software, this EULA agreement will also govern that trial. By clicking accept or installing and/or using the redTrain software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\n\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\n\nThis EULA agreement shall apply only to the Software supplied by redTrain herewith regardless of whether other software is referred to or described herein. The terms also apply to any redTrain updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply. This EULA was created by EULA Template for redTrain.\n\nLicense Grant\n\n redTrain hereby grants you a personal, non-transferable, non-exclusive licence to use the redTrain software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the redTrain software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum requirements of the redTrain software.\n\nYou are not permitted to:\n\n.Edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things.\n. Reproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose.\n. Allow any third party to use the Software on behalf of or for the benefit of any third party.\n. Use the Software in any way which breaches any applicable local, national or international law.\n. Use the Software for any purpose that redTrain considers is a breach of this EULA agreement.\n\nIntellectual Property and Ownership\n\n redTrain shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of redTrain.\n\nredTrain reserves the right to grant licences to use the Software to third parties.\n\nTermination \n\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to redTrain.\n\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\n\nGoverning Law\n\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of my."
                             //children: getSpan(),
                             )),
                   ),
@@ -292,7 +334,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("Close"),
+              child: new Text("Close", style: TextStyle(fontSize: 20.0)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
