@@ -11,7 +11,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _fromKey = GlobalKey<FormState>();
   double screenHeight;
   bool _isChecked = false;
   String urlRegister = "https://smileylion.com/redtrain/php/register_user.php";
@@ -27,7 +26,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     
     screenHeight = MediaQuery.of(context).size.height;
     return MaterialApp(
-      key: _fromKey,
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(
         primarySwatch: Colors.red,

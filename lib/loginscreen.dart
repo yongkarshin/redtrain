@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:redtrain/mainscreen.dart';
 import 'package:redtrain/registerscreen.dart';
+import 'package:redtrain/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 void main() => runApp(LoginScreen());
 bool rememberMe = false;
@@ -24,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     print("Hello i'm in INITSTATE");
-    loadPref();
+    this.loadPref();
   }
 
   @override
@@ -118,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.redAccent,
                         textColor: Colors.white,
                         elevation: 10,
-                        onPressed: _userLogin,
+                        onPressed: this._userLogin,
                       ),
                     ],
                   ),
@@ -175,7 +177,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _userLogin() {
+  void _userLogin() async{
+    ProgressDialog pr = new ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: false);
+    pr.style(message: "Log in ...");
+    pr.show();
     String email = _emailEditingController.text;
     String password = _passEditingController.text;
 
@@ -183,17 +189,32 @@ class _LoginScreenState extends State<LoginScreen> {
       "email": email,
       "password": password,
     }).then((res) {
-      if (res.body == "success") {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => MainScreen()));
-        Toast.show("Login success", context,
-            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      } else {
+      var string = res.body;
+      print(res.body);
+      List userdata = string.split(",");
+      if(userdata[0]=="success"){
+        User _user = new User(
+            name: userdata[1],
+            email: email,
+            password: password,
+            phone: userdata[3],
+            //credit: userdata[4],
+            //datereg: userdata[5],
+            //quantity: userdata[6]
+            );
+            pr.dismiss();
+        Navigator.push(context, MaterialPageRoute(
+          builder: (BuildContext context) => MainScreen(user: _user)
+        ));
+      }else{
+        pr.dismiss();
         Toast.show("Login failed", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
+      
     }).catchError((err) {
       print(err);
+      pr.dismiss();
     });
   }
 
@@ -283,7 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
         false;
   }
 
-  void loadPref() async {
+  Future<void> loadPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = (prefs.getString('email'))??'';
     String password = (prefs.getString('pass'))??'';
