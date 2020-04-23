@@ -25,11 +25,12 @@ class _MainScreenState extends State<MainScreen> {
   String curtype = "Recent";
   String cartquantity = "0";
   List traindata;
-  var _place = ['padang besar', 'arau'];
-  var _placeItemSelected = 'padang besar';
+  //var _place = ['padang besar', 'arau'];
+  //var _placeItemSelected = 'padang besar';
   DateTime _date = DateTime.now();
   var dateFormat = DateFormat('dd-MM-yyyy');
   TextEditingController _dateController = new TextEditingController();
+  TextEditingController _prdController = new TextEditingController();
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-    //TextEditingController _prdController = new TextEditingController();
+    
     if (traindata == null) {
       return Scaffold(
           appBar: AppBar(
@@ -66,138 +67,192 @@ class _MainScreenState extends State<MainScreen> {
           )));
     } else {
       return Scaffold(
+          resizeToAvoidBottomPadding: false,
           drawer: mainDrawer(context),
           appBar: AppBar(
-            title: Text('Search Train'),
+            title: Text('Train'),
           ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.business,
-                      color: Colors.black,
-                      size: 50,
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Text('Origin \t\t\t\t\t\t\t\t : \t',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    DropdownButton<String>(
-                      items: _place
-                          .map((String dropDownStringItem) => DropdownMenuItem(
-                                child: Text(
-                                  dropDownStringItem,
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                value: dropDownStringItem,
-                              ))
-                          .toList(),
-                      onChanged: (newValueSelected) {
-                        _dropDownItemSelected(newValueSelected);
-                      },
-                      value: _placeItemSelected,
-                      isExpanded: false,
-                      hint: Text('Origin', style: TextStyle(fontSize: 10)),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.business,
-                          color: Colors.black,
-                          size: 50,
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Destination : \t',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        //FlatButton(
-                        //onPressed: () => _sortItem("origin"), child: null),
-                        DropdownButton<String>(
-                          items: _place
-                              .map((String dropDownStringItem) =>
-                                  DropdownMenuItem(
-                                    child: Text(
-                                      dropDownStringItem,
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                    value: dropDownStringItem,
-                                  ))
-                              .toList(),
-                          onChanged: (newValueSelected) {
-                            _dropDownItemSelected(newValueSelected);
-                          },
-                          value: _placeItemSelected,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.calendar_today,
-                              color: Colors.black,
-                              size: 40,
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text('Pick a Date : \t',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
-                            InkWell(
-                                onTap: () => selectDate(context),
-                                child: IgnorePointer(
-                                  child: Container(
-                                    width: 150,
-                                    height: 50,
-                                    child: TextField(
-                                      controller: _dateController,
-                                      decoration: InputDecoration(
-                                        hintText:
-                                            ('${dateFormat.format(_date)}'),
-                                        hintStyle: TextStyle(
-                                            fontSize: 18, color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+          body: Stack(
+            children: <Widget>[
+              searchTrain(context),
+            ],
           ));
     }
   }
 
-  void _dropDownItemSelected(String newValueSelected) {
-    setState(() {
-      this._placeItemSelected = newValueSelected;
-    });
+  Widget searchTrain(BuildContext context) {
+    return Container(
+      height: 600,
+      margin: EdgeInsets.only(top: screenHeight / 15),
+      padding: EdgeInsets.only(left: 10, right: 10),
+      child: Column(
+        children: <Widget>[
+          Card(
+            elevation: 10,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 15,
+                  ),
+                  //From Origin
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      "From",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                  TextField(
+                    autofocus: false,
+                    controller: _prdController,
+                    decoration: InputDecoration(
+                              labelText: 'City or station',
+                              icon: Icon(Icons.transfer_within_a_station),
+                            ),
+                            onChanged: (string){
+                              
+                            },
+                  ),
+                 
+
+                  //To Destination
+                  Row(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: IconButton(
+                              icon: Icon(Icons.swap_vertical_circle),
+                              iconSize: 35,
+                              onPressed: null),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      "To",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                      onTap: () => _selectDestination(""),
+                      child: IgnorePointer(
+                        child: Container(
+                          width: 350,
+                          height: 50,
+                          child: TextField(
+                            controller: _dateController,
+                            decoration: InputDecoration(
+                              labelText: 'Going Where ?',
+                              icon: Icon(Icons.transfer_within_a_station),
+                            ),
+                          ),
+                        ),
+                      )),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // Select departure date
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      "Departure",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                      onTap: () => selectDate(context),
+                      child: IgnorePointer(
+                        child: Container(
+                          width: 350,
+                          height: 50,
+                          child: TextField(
+                            controller: _dateController,
+                            decoration: InputDecoration(
+                              labelText: 'Date',
+                              icon: Icon(Icons.calendar_today),
+                              hintText: ('${dateFormat.format(_date)}'),
+                              hintStyle:
+                                  TextStyle(fontSize: 18, color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      )),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  //select how many passenger
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      "Passenger",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                  TextField(
+                    controller: null,
+                    keyboardType: TextInputType.numberWithOptions(),
+                    decoration: InputDecoration(
+                      labelText: 'Person',
+                      icon: Icon(Icons.people_outline),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  //search train button
+                  MaterialButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    minWidth: 215,
+                    height: 50,
+                    child: Text('Search Train',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0,
+                          fontFamily: 'Roboto',
+                        )),
+                    color: Colors.yellow,
+                    textColor: Colors.black,
+                    elevation: 10,
+                    onPressed: _search,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
+  
 
   void _loadData() {
     String urlLoadJobs = "https://smileylion.com/redtrain/php/load_trains.php";
@@ -255,17 +310,72 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void _sortItem(String type) {
+  Widget _departureList(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Select Depature Location'),
+      content: Container(
+        height: 20,
+        
+        child: Row(
+          children: <Widget>[
+            TextField(
+            autofocus: false,
+            controller: _prdController,
+            decoration: InputDecoration(
+              icon: Icon(Icons.search),
+              border: OutlineInputBorder(),
+            ),
+          ),
+            MaterialButton(
+              color: Colors.black,
+              onPressed: () => {_searchDepature(_prdController.text)},
+              child: Text("Search xxxx",style: TextStyle(color: Colors.black)),
+            ),
+          ],
+          
+          
+        ),
+      ),
+    );
+  }
+  void _searchDepature(String prname){
+
+  }
+//connect to php
+  void _Departure(String origin) {
     ProgressDialog pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: false);
     pr.style(message: "Searching...");
     pr.show();
-    String urlLoadJobs = "https://smileylion.com/redtrain/php/load_trains.php";
+    String urlLoadJobs = "https://smileylion.com/redtrain/php/";
     http.post(urlLoadJobs, body: {
-      "origin": type,
+      "origin": origin,
     }).then((res) {
       setState(() {
-        curtype = type;
+        curtype = origin;
+        var extractdata = json.decode(res.body);
+        traindata = extractdata["trains"];
+        FocusScope.of(context).requestFocus(new FocusNode());
+        pr.dismiss();
+      });
+    }).catchError((err) {
+      print(err);
+      pr.dismiss();
+    });
+    pr.dismiss();
+  }
+//connect to php
+  void _selectDestination(String origin) {
+    ProgressDialog pr = new ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: false);
+    pr.style(message: "Searching...");
+    pr.show();
+    String urlLoadJobs = "https://smileylion.com/redtrain/php/";
+    http.post(urlLoadJobs, body: {
+      "origin": origin,
+    }).then((res) {
+      setState(() {
+        curtype = origin;
         var extractdata = json.decode(res.body);
         traindata = extractdata["trains"];
         FocusScope.of(context).requestFocus(new FocusNode());
@@ -295,4 +405,6 @@ class _MainScreenState extends State<MainScreen> {
       });
     }
   }
+
+  void _search() {}
 }

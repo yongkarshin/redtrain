@@ -1,11 +1,13 @@
 class Train {
-  String plate_number, origin, destination, depart_time, arrive_time, type;
+  String id, plateNumber, origin, destination, departTime, arriveTime, type, price;
   Train({
-    this.plate_number,
+    this.id,
+    this.plateNumber,
     this.origin,
     this.destination,
-    this.depart_time,
-    this.arrive_time,
+    this.departTime,
+    this.arriveTime,
     this.type,
+    this.price,
   });
 }
