@@ -167,6 +167,7 @@ class _MainScreenState extends State<MainScreen> {
                   SizedBox(
                     height: 15,
                   ),
+                  
                   // Select departure date
                   Align(
                     alignment: Alignment.bottomLeft,
